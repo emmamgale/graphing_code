@@ -19,6 +19,8 @@ import datetime
 
 app = dash.Dash(__name__)
 
+app.layout = html.Div([
+
 
 html.Label('Choose a continent'),
 dcc.Dropdown(id='selection',
@@ -31,20 +33,27 @@ dcc.Dropdown(id='selection',
             {'label': 'Oceania', 'value': 'Oceania'},
             {'label': 'South America', 'value': 'South America'}
         ],
-        value='Africa'
+        value='Oceania]'
 )
+])
 
+
+df = px.data.gapminder().query("continent== 'Oceania'")
+fig = px.line(df, x="year", y="lifeExp", color='country')
+#fig.show()
 
 @app.callback(
     Output('pop_graph', 'figure'),
     [Input('selection', 'value')])
 def update_fig(selected_cont):
-    df = px.data.gapminder().query("continent== selected_cont ")
+    df = px.data.gapminder().query("continent== selected_cont")
 
     fig = px.line(df, x="year", y="lifeExp", color='country')
 
 
     return fig
+
+fig.show()
 
     
 if __name__ == '__main__':
